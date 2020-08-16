@@ -22,6 +22,7 @@
 
 		<!-- Test dependencies -->
 		<testcontainers.version>1.14.3</testcontainers.version>
+		<strikt.version>0.26.1</strikt.version>
 	</properties>
 
 	<dependencies>
@@ -57,6 +58,7 @@
 			<artifactId>jackson-module-kotlin</artifactId>
 		</dependency>
 
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -73,6 +75,11 @@
 			<artifactId>mongodb</artifactId>
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.strikt</groupId>
+			<artifactId>strikt-core</artifactId>
+            <version>${strikt.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -145,5 +152,14 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- Required for strikt library -->
+	<repositories>
+		<repository>
+			<id>jcenter</id>
+			<name>jcenter</name>
+			<url>https://jcenter.bintray.com</url>
+		</repository>
+	</repositories>
 
 </project>

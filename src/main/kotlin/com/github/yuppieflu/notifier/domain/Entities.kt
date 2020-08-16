@@ -11,6 +11,7 @@ data class User(
 )
 
 data class Subscription(
+    val utcDeliveryHour: Int,
     val enabled: Boolean,
     val subreddits: List<String>
 )
