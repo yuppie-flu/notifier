@@ -6,6 +6,7 @@ import com.github.yuppieflu.notifier.UserNotFoundException
 import com.github.yuppieflu.notifier.db.UserRepository
 import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.Subscription
+import com.github.yuppieflu.notifier.domain.SubscriptionUpdateRequest
 import com.github.yuppieflu.notifier.domain.User
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -26,8 +27,7 @@ class UserManagementService(
     @Value("\${notifier.delivery-hour:8}") private val deliveryHourLocalTime: Int
 ) {
 
-    fun getUserById(userId: UUID): User =
-        userRepository.findById(userId) ?: throw UserNotFoundException(userId)
+    fun getUserById(userId: UUID): User = userRepository.findByIdOrThrow(userId)
 
     fun createNewUser(request: NewUserRequest): User {
         val userId = UUID.randomUUID()
@@ -44,6 +44,20 @@ class UserManagementService(
         )
         return userRepository.persist(user)
     }
+
+    fun updateSubscription(subscriptionUpdateRequest: SubscriptionUpdateRequest): User {
+        val user = userRepository.findByIdOrThrow(subscriptionUpdateRequest.userId)
+        val updatedSubscription = Subscription(
+            utcDeliveryHour = user.subscription.utcDeliveryHour,
+            enabled = subscriptionUpdateRequest.enabled ?: user.subscription.enabled,
+            subreddits = subscriptionUpdateRequest.subreddits ?: user.subscription.subreddits
+        )
+        val updatedUser = user.copy(subscription = updatedSubscription)
+        return userRepository.persist(updatedUser)
+    }
+
+    private fun UserRepository.findByIdOrThrow(userId: UUID) =
+        findById(userId) ?: throw UserNotFoundException(userId)
 
     private fun calculateUtcDeliveryHour(timezone: String): Int =
         deliveryHourLocalTime - offsetExtractor.getUtcOffsetInHours(timezone)

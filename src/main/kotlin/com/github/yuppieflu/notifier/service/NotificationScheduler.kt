@@ -20,7 +20,3 @@ class NotificationScheduler(
         }
     }
 }
-
-fun main(args: Array<String>) {
-    println(LocalDateTime.now(ZoneOffset.UTC).hour)
-}

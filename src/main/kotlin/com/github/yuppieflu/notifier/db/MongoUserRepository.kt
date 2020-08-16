@@ -36,6 +36,7 @@ data class UserEntity(
     @Id
     val id: UUID,
     val name: String,
+    @Indexed(unique = true)
     val email: String,
     val timezone: String,
     val subscription: SubscriptionEntity
