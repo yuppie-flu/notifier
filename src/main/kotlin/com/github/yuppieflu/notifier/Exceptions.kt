@@ -2,7 +2,12 @@ package com.github.yuppieflu.notifier
 
 import java.util.UUID
 
-class UserNotFoundException(userId: UUID) :
-    Exception("No users with id [$userId]")
+class UserNotFoundException(val userId: UUID) :
+    RuntimeException("No users with id [$userId]")
 
-class DbAccessException() : Exception()
+open class ValidationException(message: String) : RuntimeException(message)
+
+class InvalidTimezoneException(timezone: String) :
+    ValidationException("Invalid timezone [$timezone]")
+
+class InternalServerException(cause: Throwable) : Exception(cause)

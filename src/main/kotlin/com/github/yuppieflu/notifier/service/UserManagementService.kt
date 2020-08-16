@@ -1,21 +1,28 @@
 package com.github.yuppieflu.notifier.service
 
+import com.github.yuppieflu.notifier.InternalServerException
+import com.github.yuppieflu.notifier.InvalidTimezoneException
 import com.github.yuppieflu.notifier.UserNotFoundException
 import com.github.yuppieflu.notifier.db.UserRepository
 import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.Subscription
 import com.github.yuppieflu.notifier.domain.User
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
+import java.time.DateTimeException
 import java.time.Duration
+import java.time.Instant
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
-import java.util.TimeZone
+import java.time.zone.ZoneRulesException
 import java.util.UUID
 
 @Service
 class UserManagementService(
     private val userRepository: UserRepository,
+    private val offsetExtractor: OffsetExtractor,
     @Value("\${notifier.delivery-hour:8}") private val deliveryHourLocalTime: Int
 ) {
 
@@ -39,14 +46,30 @@ class UserManagementService(
     }
 
     private fun calculateUtcDeliveryHour(timezone: String): Int =
+        deliveryHourLocalTime - offsetExtractor.getUtcOffsetInHours(timezone)
+}
+
+@Component
+class OffsetExtractor {
+
+    private val log = LoggerFactory.getLogger(OffsetExtractor::class.java)
+
+    fun getUtcOffsetInHours(timezone: String): Int =
         runCatching {
-            val javaTimeZone = TimeZone.getTimeZone(timezone)
-            val utcOffset = Duration.of(
-                javaTimeZone.getOffset(System.currentTimeMillis()).toLong(), ChronoUnit.MILLIS
+            Duration.of(
+                ZoneId.of(timezone).rules.getOffset(Instant.now()).totalSeconds.toLong(),
+                ChronoUnit.SECONDS
             ).toHours().toInt()
-            return deliveryHourLocalTime - utcOffset
         }.fold(
-            onFailure = { throw IllegalArgumentException("Incorrect timezone: $timezone") },
+            onFailure = {
+                when (it) {
+                    is ZoneRulesException, is DateTimeException -> {
+                        log.warn("timezone parsing failed: ${it.message}")
+                        throw InvalidTimezoneException(timezone)
+                    }
+                    else -> throw InternalServerException(it)
+                }
+            },
             onSuccess = { it }
         )
 }

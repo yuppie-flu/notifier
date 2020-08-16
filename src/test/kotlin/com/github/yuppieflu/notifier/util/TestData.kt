@@ -1,5 +1,6 @@
 package com.github.yuppieflu.notifier.util
 
+import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.Subscription
 import com.github.yuppieflu.notifier.domain.User
 import com.github.yuppieflu.notifier.rest.CreateUserDto
@@ -7,11 +8,15 @@ import java.util.UUID
 
 // Domain entities
 
+private const val DEFAULT_NAME = "Username"
+private const val DEFAULT_TIMEZONE = "Europe/Berlin"
+private fun defaultEmail(name: String) = "$name@example.com"
+
 fun testUser(
     id: UUID = UUID.randomUUID(),
-    name: String = "Username",
-    email: String = "$name@example.com",
-    timeZone: String = "Europe/Berlin",
+    name: String = DEFAULT_NAME,
+    email: String = defaultEmail(name),
+    timeZone: String = DEFAULT_TIMEZONE,
     utcDeliveryHour: Int = 6,
     subscriptionEnabled: Boolean = true,
     subreddits: List<String> = listOf("kotlin")
@@ -27,12 +32,23 @@ fun testUser(
     )
 )
 
-// REST DTOs
+// REST related DTOs
+
+fun testNewUserRequest(
+    name: String = DEFAULT_NAME,
+    email: String = defaultEmail(name),
+    timeZone: String = DEFAULT_TIMEZONE
+) =
+    NewUserRequest(
+        name = name,
+        email = email,
+        timezone = timeZone
+    )
 
 fun testCreateUserDto(
-    name: String = "name",
-    email: String = "$name@example.com",
-    timeZone: String = "Europe/Berlin"
+    name: String = DEFAULT_NAME,
+    email: String = defaultEmail(name),
+    timeZone: String = DEFAULT_TIMEZONE
 ) = CreateUserDto(
     name = name,
     email = email,
