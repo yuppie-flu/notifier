@@ -1,3 +1,10 @@
 spring.main.banner-mode: off
 
 spring.data.mongodb.uri: mongodb://localhost:27017/test
+
+notifier:
+  sendgrid:
+    apiKey: ${SENDGRID_API_KEY}
+    fromEmail: notifier@example.com
+    templateId: d-273a693ea06544b6a7894bed512f9af6
+    sandboxMode: true
