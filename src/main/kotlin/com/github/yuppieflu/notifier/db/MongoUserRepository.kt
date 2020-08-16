@@ -21,13 +21,13 @@ class MongoUserRepositoryImpl(
     override fun findById(userId: UUID): User? =
         springDataRepo.findById(userId).orElse(null)?.toDomain()
 
-    override fun findByDeliveryHour(hour: Int): List<User> =
+    override fun findByDeliveryHourAndEnabledSubscription(hour: Int): List<User> =
         springDataRepo.findByUtcDeliveryHour(hour).map { it.toDomain() }
 }
 
 @Repository
 interface MongoSpringDataRepository : MongoRepository<UserEntity, UUID> {
-    @Query(value = "{ 'subscription.utcDeliveryHour' : ?0 }")
+    @Query(value = "{ 'subscription.utcDeliveryHour' : ?0, 'subscription.enabled': true }")
     fun findByUtcDeliveryHour(hour: Int): List<UserEntity>
 }
 

@@ -10,12 +10,13 @@ import java.util.UUID
 
 private const val DEFAULT_NAME = "Username"
 private const val DEFAULT_TIMEZONE = "Europe/Berlin"
-private fun defaultEmail(name: String) = "$name@example.com"
+private fun defaultEmail(id: UUID) =
+    "${id.toString().replace('-', '.')}@example.com"
 
 fun testUser(
     id: UUID = UUID.randomUUID(),
     name: String = DEFAULT_NAME,
-    email: String = defaultEmail(name),
+    email: String = defaultEmail(id),
     timeZone: String = DEFAULT_TIMEZONE,
     utcDeliveryHour: Int = 6,
     subscriptionEnabled: Boolean = true,
@@ -36,7 +37,7 @@ fun testUser(
 
 fun testNewUserRequest(
     name: String = DEFAULT_NAME,
-    email: String = defaultEmail(name),
+    email: String = defaultEmail(UUID.randomUUID()),
     timeZone: String = DEFAULT_TIMEZONE
 ) =
     NewUserRequest(
@@ -47,7 +48,7 @@ fun testNewUserRequest(
 
 fun testCreateUserDto(
     name: String = DEFAULT_NAME,
-    email: String = defaultEmail(name),
+    email: String = defaultEmail(UUID.randomUUID()),
     timeZone: String = DEFAULT_TIMEZONE
 ) = CreateUserDto(
     name = name,
