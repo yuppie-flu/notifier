@@ -3,6 +3,7 @@ package com.github.yuppieflu.notifier.rest
 import com.github.yuppieflu.notifier.ValidationException
 import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.SubscriptionUpdateRequest
+import com.github.yuppieflu.notifier.domain.UpdateUserRequest
 import com.github.yuppieflu.notifier.domain.User
 import com.github.yuppieflu.notifier.service.UserManagementService
 import org.springframework.beans.factory.annotation.Value
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
@@ -26,35 +28,39 @@ class UserManagementController(
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody createUserDto: CreateUserDto): UserResponseDto =
-        UserResponseDto(userManagementService.createNewUser(createUserDto.toNewUserRequest()))
+    fun createUser(@RequestBody userInputDto: UserInputDto): UserResponseDto =
+        UserResponseDto(userManagementService.createNewUser(userInputDto.toNewUserRequest()))
 
     @GetMapping("/{userId}")
     @ResponseBody
     fun getUser(@PathVariable userId: UUID): UserResponseDto =
         UserResponseDto(userManagementService.getUserById(userId))
 
-    @PostMapping("/{userId}/subscription")
+    @PutMapping("/{userId}")
     @ResponseBody
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun updateUser(
+        @PathVariable userId: UUID,
+        @RequestBody userInputDto: UserInputDto
+    ) = userManagementService.updateUser(userInputDto.toUpdateUserRequest(userId))
+
+    @PutMapping("/{userId}/subscription")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateSubscription(
         @PathVariable userId: UUID,
-        @RequestBody subscriptionInputDto: SubscriptionInputDto
-    ): UserResponseDto {
-        if (subscriptionInputDto.enabled == null && subscriptionInputDto.subreddits == null) {
-            throw ValidationException("No data to update subscription.")
-        }
-        if (maxSubreddits < subscriptionInputDto.subreddits?.size ?: 0) {
+        @RequestBody subscriptionDto: SubscriptionDto
+    ) {
+        if (subscriptionDto.subreddits.size > maxSubreddits) {
             throw ValidationException("Too many subreddits! Only max $maxSubreddits is allowed.")
         }
-        return UserResponseDto(
-            userManagementService.updateSubscription(
-                subscriptionInputDto.toSubscriptionUpdateRequest(userId)
-            )
+        userManagementService.updateSubscription(
+            subscriptionDto.toSubscriptionUpdateRequest(userId)
         )
     }
 }
 
-data class CreateUserDto(
+data class UserInputDto(
     val name: String,
     val email: String,
     val timezone: String
@@ -64,18 +70,13 @@ data class CreateUserDto(
         email = email.trim(),
         timezone = timezone.trim()
     )
-}
 
-data class SubscriptionInputDto(
-    val enabled: Boolean?,
-    val subreddits: List<String>?
-) {
-    fun toSubscriptionUpdateRequest(userId: UUID) =
-        SubscriptionUpdateRequest(
-            userId = userId,
-            enabled = enabled,
-            subreddits = subreddits
-        )
+    fun toUpdateUserRequest(userId: UUID) = UpdateUserRequest(
+        userId = userId,
+        name = name.trim(),
+        email = email.trim(),
+        timezone = timezone.trim()
+    )
 }
 
 data class UserResponseDto(
@@ -100,4 +101,11 @@ data class UserResponseDto(
 data class SubscriptionDto(
     val enabled: Boolean,
     val subreddits: List<String>
-)
+) {
+    fun toSubscriptionUpdateRequest(userId: UUID) =
+        SubscriptionUpdateRequest(
+            userId = userId,
+            enabled = enabled,
+            subreddits = subreddits.map { it.trim() }
+        )
+}

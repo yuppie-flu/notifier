@@ -8,8 +8,15 @@ data class NewUserRequest(
     val timezone: String
 )
 
+data class UpdateUserRequest(
+    val userId: UUID,
+    val name: String,
+    val email: String,
+    val timezone: String
+)
+
 data class SubscriptionUpdateRequest(
     val userId: UUID,
-    val enabled: Boolean?,
-    val subreddits: List<String>?
+    val enabled: Boolean,
+    val subreddits: List<String>
 )

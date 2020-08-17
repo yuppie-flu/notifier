@@ -7,6 +7,7 @@ import com.github.yuppieflu.notifier.db.UserRepository
 import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.Subscription
 import com.github.yuppieflu.notifier.domain.SubscriptionUpdateRequest
+import com.github.yuppieflu.notifier.domain.UpdateUserRequest
 import com.github.yuppieflu.notifier.domain.User
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -45,12 +46,22 @@ class UserManagementService(
         return userRepository.persist(user)
     }
 
+    fun updateUser(request: UpdateUserRequest): User {
+        val user = userRepository.findByIdOrThrow(request.userId)
+        val updatedUser = user.copy(
+            name = request.name,
+            email = request.email,
+            timezone = request.timezone
+        )
+        return userRepository.persist(updatedUser)
+    }
+
     fun updateSubscription(subscriptionUpdateRequest: SubscriptionUpdateRequest): User {
         val user = userRepository.findByIdOrThrow(subscriptionUpdateRequest.userId)
         val updatedSubscription = Subscription(
             utcDeliveryHour = user.subscription.utcDeliveryHour,
-            enabled = subscriptionUpdateRequest.enabled ?: user.subscription.enabled,
-            subreddits = subscriptionUpdateRequest.subreddits ?: user.subscription.subreddits
+            enabled = subscriptionUpdateRequest.enabled,
+            subreddits = subscriptionUpdateRequest.subreddits
         )
         val updatedUser = user.copy(subscription = updatedSubscription)
         return userRepository.persist(updatedUser)

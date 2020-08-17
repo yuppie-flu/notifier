@@ -3,8 +3,8 @@ package com.github.yuppieflu.notifier.util
 import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.Subscription
 import com.github.yuppieflu.notifier.domain.User
-import com.github.yuppieflu.notifier.rest.CreateUserDto
-import com.github.yuppieflu.notifier.rest.SubscriptionInputDto
+import com.github.yuppieflu.notifier.rest.SubscriptionDto
+import com.github.yuppieflu.notifier.rest.UserInputDto
 import java.util.UUID
 
 // Domain entities
@@ -47,20 +47,20 @@ fun testNewUserRequest(
         timezone = timeZone
     )
 
-fun testCreateUserDto(
+fun testUserInputDto(
     name: String = DEFAULT_NAME,
     email: String = defaultEmail(UUID.randomUUID()),
     timeZone: String = DEFAULT_TIMEZONE
-) = CreateUserDto(
+) = UserInputDto(
     name = name,
     email = email,
     timezone = timeZone
 )
 
-fun testSubscriptionInputDto(
-    enabled: Boolean? = null,
-    subreddits: List<String>? = listOf("kotlin", "berlin")
-) = SubscriptionInputDto(
+fun testSubscriptionDto(
+    enabled: Boolean = true,
+    subreddits: List<String> = listOf("kotlin", "berlin")
+) = SubscriptionDto(
     enabled = enabled,
     subreddits = subreddits
 )

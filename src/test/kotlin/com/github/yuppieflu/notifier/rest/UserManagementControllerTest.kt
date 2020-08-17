@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.yuppieflu.notifier.InvalidTimezoneException
 import com.github.yuppieflu.notifier.UserNotFoundException
 import com.github.yuppieflu.notifier.service.UserManagementService
-import com.github.yuppieflu.notifier.util.testCreateUserDto
+import com.github.yuppieflu.notifier.util.testUserInputDto
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,7 +44,7 @@ class UserManagementControllerTest {
     @Test
     fun `should return bad request for unknown timezone`() {
         // given
-        val request = testCreateUserDto()
+        val request = testUserInputDto()
         given(userManagementServiceMock.createNewUser(request.toNewUserRequest()))
             .willThrow(InvalidTimezoneException::class.java)
 
