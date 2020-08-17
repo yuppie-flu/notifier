@@ -4,6 +4,7 @@ import com.github.yuppieflu.notifier.domain.NewUserRequest
 import com.github.yuppieflu.notifier.domain.Subscription
 import com.github.yuppieflu.notifier.domain.User
 import com.github.yuppieflu.notifier.rest.CreateUserDto
+import com.github.yuppieflu.notifier.rest.SubscriptionInputDto
 import java.util.UUID
 
 // Domain entities
@@ -54,4 +55,12 @@ fun testCreateUserDto(
     name = name,
     email = email,
     timezone = timeZone
+)
+
+fun testSubscriptionInputDto(
+    enabled: Boolean? = null,
+    subreddits: List<String>? = listOf("kotlin", "berlin")
+) = SubscriptionInputDto(
+    enabled = enabled,
+    subreddits = subreddits
 )
