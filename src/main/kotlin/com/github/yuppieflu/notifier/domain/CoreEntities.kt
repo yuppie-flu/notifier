@@ -17,18 +17,6 @@ data class Subscription(
     val subreddits: List<String>
 )
 
-data class NewUserRequest(
-    val name: String,
-    val email: String,
-    val timezone: String
-)
-
-data class SubscriptionUpdateRequest(
-    val userId: UUID,
-    val enabled: Boolean?,
-    val subreddits: List<String>?
-)
-
 data class NotificationPackage(
     val username: String,
     val email: String,
