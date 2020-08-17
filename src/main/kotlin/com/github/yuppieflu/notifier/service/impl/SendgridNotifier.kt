@@ -26,8 +26,9 @@ class SendgridNotifier(
 
     override fun notify(aPackage: NotificationPackage) {
         val personalization = Personalization().apply {
-            addDynamicTemplateData("username", aPackage.username)
             addTo(Email(aPackage.email))
+            addDynamicTemplateData("username", aPackage.username)
+            // TODO: add the rest of notification package data to dynamic template
         }
 
         val mail = Mail().apply {

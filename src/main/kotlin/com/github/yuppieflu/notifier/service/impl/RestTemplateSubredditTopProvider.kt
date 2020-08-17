@@ -22,12 +22,16 @@ class RestTemplateSubredditTopProvider(
     override fun getTopPosts(subreddit: String): SubredditTop {
         val httpEntity = HttpEntity<String>(headers)
 
+        // TODO: add error retrying and rate limiting
+        // Using https://github.com/resilience4j/resilience4j for example
         val response = restTemplate.exchange(
             subredditTopQueryUrl(subreddit),
             HttpMethod.GET,
             httpEntity,
             RedditPostListingResponse::class.java
         )
+        // TODO: check response status code
+
         return response.body?.data?.children?.map {
             PostMeta(
                 subreddit = subreddit,
