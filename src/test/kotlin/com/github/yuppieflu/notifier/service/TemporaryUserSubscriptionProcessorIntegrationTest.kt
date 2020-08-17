@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 class TemporaryUserSubscriptionProcessorIntegrationTest : BaseIntegrationTest() {
 
     @Autowired
-    private lateinit var subscriptionProcessor: UserSubscriptionProcessorService
+    private lateinit var subscriptionProcessor: SubscriptionProcessor
 
     @Test
     fun `test notification`() {

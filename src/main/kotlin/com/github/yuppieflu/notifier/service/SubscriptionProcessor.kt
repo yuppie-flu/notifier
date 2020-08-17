@@ -5,7 +5,7 @@ import com.github.yuppieflu.notifier.domain.User
 import org.springframework.stereotype.Service
 
 @Service
-class UserSubscriptionProcessorService(
+class SubscriptionProcessor(
     private val subredditTopProvider: SubredditTopProvider,
     private val notifier: Notifier
 ) {
