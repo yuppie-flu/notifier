@@ -9,7 +9,7 @@ import com.github.yuppieflu.notifier.domain.Subscription
 import com.github.yuppieflu.notifier.domain.SubscriptionUpdateRequest
 import com.github.yuppieflu.notifier.domain.UpdateUserRequest
 import com.github.yuppieflu.notifier.domain.User
-import org.slf4j.LoggerFactory
+import com.github.yuppieflu.notifier.utils.Slf4J
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
@@ -76,8 +76,7 @@ class UserManagementService(
 
 @Component
 class OffsetExtractor {
-
-    private val log = LoggerFactory.getLogger(OffsetExtractor::class.java)
+    private val log by Slf4J
 
     fun getUtcOffsetInHours(timezone: String): Int =
         runCatching {

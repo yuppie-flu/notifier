@@ -1,7 +1,7 @@
 package com.github.yuppieflu.notifier.service
 
 import com.github.yuppieflu.notifier.db.UserRepository
-import org.slf4j.LoggerFactory
+import com.github.yuppieflu.notifier.utils.Slf4J
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -12,7 +12,7 @@ class NotificationScheduler(
     private val userRepository: UserRepository,
     private val subscriptionProcessor: SubscriptionProcessor
 ) {
-    private val log = LoggerFactory.getLogger(NotificationScheduler::class.java)
+    private val log by Slf4J
 
     @Scheduled(cron = "0 0 * * * *")
     fun scheduleNotification() {

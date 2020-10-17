@@ -2,7 +2,7 @@ package com.github.yuppieflu.notifier.rest
 
 import com.github.yuppieflu.notifier.UserNotFoundException
 import com.github.yuppieflu.notifier.ValidationException
-import org.slf4j.LoggerFactory
+import com.github.yuppieflu.notifier.utils.Slf4J
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class NotifierExceptionHandler {
-
-    private val log = LoggerFactory.getLogger(NotifierExceptionHandler::class.java)
+    private val log by Slf4J
 
     @ExceptionHandler(Throwable::class)
     fun exceptionHandler(th: Throwable): ResponseEntity<ErrorDto> =
