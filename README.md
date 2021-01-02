@@ -10,7 +10,7 @@ and receiving a summary with top posts by email.
 
 ### Running locally
 
-1. `docker-compose up` - pulls mongodb image and starts it
+1. `docker-compose up` - pulls postgres image and starts it
 1. `./mvnw clean spring-boot:run` - starts the spring boot app locally
 
 ### Development

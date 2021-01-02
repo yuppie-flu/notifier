@@ -70,8 +70,8 @@ class UserManagementService(
     private fun UserRepository.findByIdOrThrow(userId: UUID) =
         findById(userId) ?: throw UserNotFoundException(userId)
 
-    private fun calculateUtcDeliveryHour(timezone: String): Int =
-        deliveryHourLocalTime - offsetExtractor.getUtcOffsetInHours(timezone)
+    private fun calculateUtcDeliveryHour(timezone: String): Byte =
+        (deliveryHourLocalTime - offsetExtractor.getUtcOffsetInHours(timezone)).toByte()
 }
 
 @Component

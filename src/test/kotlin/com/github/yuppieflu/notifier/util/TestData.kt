@@ -19,7 +19,7 @@ fun testUser(
     name: String = DEFAULT_NAME,
     email: String = defaultEmail(id),
     timeZone: String = DEFAULT_TIMEZONE,
-    utcDeliveryHour: Int = 6,
+    utcDeliveryHour: Byte = 6,
     subscriptionEnabled: Boolean = true,
     subreddits: List<String> = listOf("kotlin")
 ) = User(

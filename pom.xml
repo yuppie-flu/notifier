@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.3.RELEASE</version>
+		<version>2.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github.yuppieflu</groupId>
@@ -16,13 +16,13 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<kotlin.version>1.4.10</kotlin.version>
-		<sendgrid.version>4.6.3</sendgrid.version>
+		<kotlin.version>1.4.21</kotlin.version>
+        <exposed.version>0.28.1</exposed.version>
 		<!-- Utils -->
-		<ktlint.version>0.37.2</ktlint.version>
+		<ktlint.version>0.40.0</ktlint.version>
 
 		<!-- Test dependencies -->
-		<testcontainers.version>1.14.3</testcontainers.version>
+		<testcontainers.version>1.15.1</testcontainers.version>
 		<strikt.version>0.26.1</strikt.version>
 	</properties>
 
@@ -41,10 +41,27 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- Pg DB -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.exposed</groupId>
+			<artifactId>exposed-core</artifactId>
+			<version>${exposed.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.exposed</groupId>
+			<artifactId>exposed-jdbc</artifactId>
+			<version>${exposed.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-reflect</artifactId>
@@ -62,7 +79,6 @@
 		<dependency>
 			<groupId>com.sendgrid</groupId>
 			<artifactId>sendgrid-java</artifactId>
-            <version>${sendgrid.version}</version>
 		</dependency>
 
 		<!-- Test dependencies -->
@@ -79,7 +95,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>mongodb</artifactId>
+			<artifactId>postgresql</artifactId>
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>

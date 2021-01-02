@@ -6,5 +6,5 @@ import java.util.UUID
 interface UserRepository {
     fun persist(user: User): User
     fun findById(userId: UUID): User?
-    fun findByDeliveryHourAndEnabledSubscription(hour: Int): List<User>
+    fun findByDeliveryHourAndEnabledSubscription(hour: Byte): List<User>
 }

@@ -16,7 +16,7 @@ class NotificationScheduler(
 
     @Scheduled(cron = "0 0 * * * *")
     fun scheduleNotification() {
-        val utcHour = LocalDateTime.now(ZoneOffset.UTC).hour
+        val utcHour = LocalDateTime.now(ZoneOffset.UTC).hour.toByte()
         userRepository.findByDeliveryHourAndEnabledSubscription(utcHour).forEach { user ->
             runCatching {
                 subscriptionProcessor.fetchDataAndNotify(user)

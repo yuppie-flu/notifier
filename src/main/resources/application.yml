@@ -1,6 +1,9 @@
 spring.main.banner-mode: off
 
-spring.data.mongodb.uri: mongodb://localhost:27017/test
+spring.datasource:
+  url: jdbc:postgresql://localhost:5432/test
+  username: test
+  password: test
 
 notifier:
   sendgrid:

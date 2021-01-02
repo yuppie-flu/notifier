@@ -12,7 +12,7 @@ data class User(
 )
 
 data class Subscription(
-    val utcDeliveryHour: Int,
+    val utcDeliveryHour: Byte,
     val enabled: Boolean,
     val subreddits: List<String>
 )

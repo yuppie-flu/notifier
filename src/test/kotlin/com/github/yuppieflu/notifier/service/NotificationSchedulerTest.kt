@@ -22,7 +22,7 @@ class NotificationSchedulerTest {
         // given
         val user1 = testUser()
         val user2 = testUser()
-        val utcHour = LocalDateTime.now(ZoneOffset.UTC).hour
+        val utcHour = LocalDateTime.now(ZoneOffset.UTC).hour.toByte()
 
         given(userRepositoryMock.findByDeliveryHourAndEnabledSubscription(utcHour))
             .willReturn(listOf(user1, user2))
