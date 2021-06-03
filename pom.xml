@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.1</version>
+		<version>2.4.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github.yuppieflu</groupId>
@@ -16,14 +16,14 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<kotlin.version>1.4.21</kotlin.version>
-        <exposed.version>0.28.1</exposed.version>
+		<kotlin.version>1.5.10</kotlin.version>
+        <exposed.version>0.31.1</exposed.version>
 		<!-- Utils -->
-		<ktlint.version>0.40.0</ktlint.version>
+		<ktlint.version>0.41.0</ktlint.version>
 
 		<!-- Test dependencies -->
-		<testcontainers.version>1.15.1</testcontainers.version>
-		<strikt.version>0.26.1</strikt.version>
+		<testcontainers.version>1.15.3</testcontainers.version>
+		<strikt.version>0.31.0</strikt.version>
 	</properties>
 
 	<dependencies>
@@ -175,14 +175,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<!-- Required for strikt library -->
-	<repositories>
-		<repository>
-			<id>jcenter</id>
-			<name>jcenter</name>
-			<url>https://jcenter.bintray.com</url>
-		</repository>
-	</repositories>
 
 </project>
